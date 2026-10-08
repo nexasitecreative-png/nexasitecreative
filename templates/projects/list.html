@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Projects | Nexa Site Creative
+{% endblock %}
+
+
+{% block meta_description %}
+    Explore our projects and portfolio of digital solutions.
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div
+            class="text-center"
+            data-aos="fade-up"
+        >
+
+            <span class="text-primary fw-bold">
+                OUR WORK
+            </span>
+
+            <h1 class="display-5 fw-bold mt-2">
+                Our Projects
+            </h1>
+
+            <p class="text-muted mx-auto mt-3 projects-page-description">
+                Explore our latest projects and digital solutions.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div
+            id="projects-page-container"
+            class="row g-4"
+        ></div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'js/projects-page.js' %}?v=2"
+></script>
+<script
+    src="{% static 'js/projects-animation.js' %}?v=1"
+></script>
+
+{% endblock %}

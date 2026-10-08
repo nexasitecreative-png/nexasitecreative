@@ -1,0 +1,1601 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    About Us | Nexa Site Creative
+{% endblock %}
+
+
+{% block meta_description %}
+    Discover our story, mission, vision and the values behind our digital solutions.
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =========================================================
+     ABOUT HERO
+========================================================= -->
+
+<section class="about-premium-hero">
+
+    <div class="about-hero-orb about-orb-one"></div>
+    <div class="about-hero-orb about-orb-two"></div>
+
+
+    <div class="container">
+
+        <!-- Loading -->
+
+        <div
+            id="about-loading"
+            class="about-loading text-center py-5"
+        >
+
+            <div class="spinner-border"></div>
+
+            <p class="mt-3">
+                Loading...
+            </p>
+
+        </div>
+
+
+        <!-- Error -->
+
+        <div
+            id="about-error"
+            class="alert alert-danger d-none"
+        >
+            Unable to load About Us information.
+        </div>
+
+
+        <!-- Content -->
+
+        <div
+            id="about-content"
+            class="d-none"
+        >
+
+
+            <!-- =================================================
+                 HERO
+            ================================================= -->
+
+            <div class="row align-items-center g-5 about-hero-content">
+
+
+                <!-- TEXT -->
+
+                <div class="col-lg-6">
+
+                    <div class="about-hero-text">
+
+                        <span
+                            id="about-eyebrow"
+                            class="about-eyebrow"
+                        >
+                            ABOUT OUR COMPANY
+                        </span>
+
+
+                        <h2
+                            id="about-title"
+                            class="about-premium-title"
+                        ></h2>
+
+
+                        <div class="about-title-line"></div>
+
+
+                        <p
+                            id="about-story"
+                            class="about-premium-story"
+                        ></p>
+
+
+                        <a
+                            href="#about-values"
+                            class="btn btn-primary btn-lg about-hero-button"
+                        >
+                            Discover Our Story
+
+                            <i class="bi bi-arrow-down ms-2"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGE -->
+
+                <div class="col-lg-6">
+
+                    <div
+                        id="about-image-container"
+                        class="about-premium-image-wrapper"
+                    >
+
+                        <div class="about-image-backdrop"></div>
+
+
+                        <img
+                            id="about-image"
+                            src=""
+                            alt="About Our Company"
+                            class="about-premium-image"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATS
+            ================================================= -->
+
+            <div class="about-stats">
+
+                <div class="row g-0">
+
+
+                    <div class="col-6 col-lg-3">
+
+                        <div class="about-stat">
+
+                            <strong>
+                                <span id="founded-year">
+                                    0
+                                </span>
+                            </strong>
+
+                            <span>
+                                Founded
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6 col-lg-3">
+
+                        <div class="about-stat">
+
+                            <strong>
+                                <span id="projects-completed">
+                                    0
+                                </span>
+                            </strong>
+
+                            <span>
+                                Projects
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6 col-lg-3">
+
+                        <div class="about-stat">
+
+                            <strong>
+                                <span id="happy-clients">
+                                    0
+                                </span>
+                            </strong>
+
+                            <span>
+                                Happy Clients
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6 col-lg-3">
+
+                        <div class="about-stat">
+
+                            <strong>
+                                <span id="years-experience">
+                                    0
+                                </span>
+                            </strong>
+
+                            <span>
+                                Years Experience
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MISSION / VISION
+            ================================================= -->
+
+            <section class="about-mission-section">
+
+                <div class="text-center about-section-heading">
+
+                    <span>
+                        WHAT DRIVES US
+                    </span>
+
+                    <h2>
+                        Purpose Behind Our Work
+                    </h2>
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- Mission -->
+
+                    <div class="col-lg-6">
+
+                        <div class="about-large-card">
+
+                            <div class="about-card-icon">
+                                <i class="bi bi-bullseye"></i>
+                            </div>
+
+                            <span>
+                                OUR MISSION
+                            </span>
+
+                            <h3>
+                                Creating Technology With Purpose
+                            </h3>
+
+                            <p id="about-mission"></p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Vision -->
+
+                    <div class="col-lg-6">
+
+                        <div class="about-large-card">
+
+                            <div class="about-card-icon">
+                                <i class="bi bi-eye"></i>
+                            </div>
+
+                            <span>
+                                OUR VISION
+                            </span>
+
+                            <h3>
+                                Building A Better Digital Future
+                            </h3>
+
+                            <p id="about-vision"></p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WHY CHOOSE US
+            ================================================= -->
+
+            <section class="about-why-section">
+
+                <div class="row align-items-center g-5">
+
+
+                    <div class="col-lg-5">
+
+                        <span class="about-section-label">
+                            WHY WORK WITH US
+                        </span>
+
+
+                        <h2
+                            id="why-title"
+                            class="about-section-title"
+                        ></h2>
+
+
+                        <p
+                            id="why-description"
+                            class="about-section-description"
+                        ></p>
+
+                    </div>
+
+
+                    <div class="col-lg-7">
+
+                        <div class="about-benefits">
+
+
+                            <div class="about-benefit">
+
+                                <span>
+                                    01
+                                </span>
+
+                                <div>
+
+                                    <h4 id="why-point-1">
+                                    </h4>
+
+                                    <p>
+                                        Solutions designed around
+                                        real business objectives.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="about-benefit">
+
+                                <span>
+                                    02
+                                </span>
+
+                                <div>
+
+                                    <h4 id="why-point-2">
+                                    </h4>
+
+                                    <p>
+                                        Technology prepared for
+                                        future growth.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="about-benefit">
+
+                                <span>
+                                    03
+                                </span>
+
+                                <div>
+
+                                    <h4 id="why-point-3">
+                                    </h4>
+
+                                    <p>
+                                        Experiences designed with
+                                        people in mind.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="about-benefit">
+
+                                <span>
+                                    04
+                                </span>
+
+                                <div>
+
+                                    <h4 id="why-point-4">
+                                    </h4>
+
+                                    <p>
+                                        A relationship that continues
+                                        beyond launch.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 VALUES
+            ================================================= -->
+
+            <section
+                id="about-values"
+                class="about-values-section"
+            >
+
+                <div class="text-center about-section-heading">
+
+                    <span>
+                        OUR VALUES
+                    </span>
+
+                    <h2>
+                        Principles Behind Everything We Do
+                    </h2>
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- Innovation -->
+
+                    <div class="col-lg-4">
+
+                        <div class="about-value-card">
+
+                            <div class="about-value-number">
+                                01
+                            </div>
+
+                            <i class="bi bi-lightbulb"></i>
+
+                            <h3 id="value-1-title"></h3>
+
+                            <p id="value-1-description"></p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Quality -->
+
+                    <div class="col-lg-4">
+
+                        <div class="about-value-card">
+
+                            <div class="about-value-number">
+                                02
+                            </div>
+
+                            <i class="bi bi-gem"></i>
+
+                            <h3 id="value-2-title"></h3>
+
+                            <p id="value-2-description"></p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Trust -->
+
+                    <div class="col-lg-4">
+
+                        <div class="about-value-card">
+
+                            <div class="about-value-number">
+                                03
+                            </div>
+
+                            <i class="bi bi-shield-check"></i>
+
+                            <h3 id="value-3-title"></h3>
+
+                            <p id="value-3-description"></p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FINAL CTA
+            ================================================= -->
+
+            <section class="about-final-cta">
+
+                <div class="about-cta-inner">
+
+                    <span>
+                        LET'S BUILD SOMETHING GREAT
+                    </span>
+
+
+                    <h2 id="cta-title"></h2>
+
+
+                    <p id="cta-description"></p>
+
+
+                    <!-- <a
+                        id="cta-button"
+                        href="#quote"
+                        class="btn btn-light btn-lg"
+                    ></a> -->
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+    /* =========================================================
+   PREMIUM ABOUT ANIMATIONS
+   DOES NOT CHANGE YOUR EXISTING COLORS
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. SMOOTH SCROLL
+--------------------------------------------------------- */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================================================
+   COMPACT / CLEAN ABOUT PAGE SPACING
+   Keep existing colors
+========================================================= */
+
+
+/* -----------------------------
+   HERO
+----------------------------- */
+
+.about-hero-content {
+    min-height: auto;
+    padding: 55px 0 35px;
+}
+
+.about-hero-text {
+    padding-right: 20px;
+}
+
+.about-eyebrow {
+    margin-bottom: 8px;
+}
+
+.about-premium-title {
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    /* font-size: clamp(2.6rem, 5vw, 4.5rem); */
+    line-height: 1.02;
+}
+
+.about-title-line {
+    margin: 14px 0;
+}
+
+.about-premium-story {
+    margin-bottom: 12px;
+
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+.about-hero-button {
+    margin-top: 12px;
+}
+
+
+/* -----------------------------
+   HERO IMAGE
+----------------------------- */
+
+.about-premium-image-wrapper {
+    max-width: 500px;
+}
+
+
+/* -----------------------------
+   STATS
+----------------------------- */
+
+.about-stats {
+    margin-top: 15px;
+}
+
+.about-stat {
+    min-height: 100px;
+}
+
+.about-stat strong {
+    font-size: 32px;
+}
+
+.about-stat span:last-child {
+    margin-top: 2px;
+}
+
+
+/* -----------------------------
+   ALL MAIN SECTIONS
+----------------------------- */
+
+.about-mission-section,
+.about-why-section,
+.about-values-section {
+    padding: 65px 0;
+}
+
+
+/* -----------------------------
+   SECTION HEADINGS
+----------------------------- */
+
+.about-section-heading {
+    margin-bottom: 30px;
+}
+
+.about-section-heading h2,
+.about-section-title {
+    margin-top: 8px;
+    margin-bottom: 10px;
+
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.1;
+}
+
+.about-section-heading span,
+.about-section-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+
+/* -----------------------------
+   MISSION / VISION CARDS
+----------------------------- */
+
+.about-large-card {
+    padding: 28px;
+    border-radius: 20px;
+}
+
+.about-card-icon {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 15px;
+
+    border-radius: 14px;
+}
+
+.about-large-card h3 {
+    margin: 9px 0;
+
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+.about-large-card p {
+    margin-bottom: 0;
+
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+
+/* -----------------------------
+   WHY SECTION
+----------------------------- */
+
+.about-section-description {
+    margin-bottom: 15px;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.about-benefit {
+    grid-template-columns: 45px 1fr;
+
+    gap: 15px;
+
+    padding: 17px 0;
+}
+
+.about-benefit h4 {
+    margin-bottom: 4px;
+
+    font-size: 17px;
+}
+
+.about-benefit p {
+    margin-bottom: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* -----------------------------
+   VALUES
+----------------------------- */
+
+.about-values-section {
+    padding-top: 55px;
+}
+
+.about-value-card {
+    min-height: 270px;
+
+    padding: 28px;
+
+    border-radius: 20px;
+}
+
+.about-value-card > i {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 18px;
+
+    border-radius: 14px;
+
+    font-size: 23px;
+}
+
+.about-value-card h3 {
+    margin-bottom: 8px;
+
+    font-size: 21px;
+}
+
+.about-value-card p {
+    margin-bottom: 0;
+
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.about-value-number {
+    top: 20px;
+    right: 22px;
+}
+
+
+/* -----------------------------
+   FINAL CTA
+----------------------------- */
+
+.about-final-cta {
+    margin: 25px 0 55px;
+
+    padding: 60px 25px;
+
+    border-radius: 25px;
+}
+
+.about-final-cta h2 {
+    margin: 12px auto;
+
+    font-size: clamp(2.1rem, 4vw, 3.5rem);
+    line-height: 1.05;
+}
+
+.about-final-cta p {
+    margin: 12px auto;
+
+    max-width: 600px;
+
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.about-final-cta .btn {
+    margin-top: 12px;
+}
+
+
+/* =========================================================
+   ROW GAP CONTROL
+========================================================= */
+
+.about-premium-hero .row.g-5 {
+    --bs-gutter-y: 2rem;
+}
+
+.about-premium-hero .row.g-4 {
+    --bs-gutter-y: 1.25rem;
+}
+
+
+/* =========================================================
+   MOBILE — EVEN MORE COMPACT
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .about-hero-content {
+        padding: 35px 0 25px;
+    }
+
+    .about-premium-title {
+        font-size: 2.6rem;
+        letter-spacing: -1.5px;
+    }
+
+    .about-premium-story {
+        font-size: 15px;
+    }
+
+    .about-premium-image-wrapper {
+        margin-top: 5px;
+    }
+
+    .about-stat {
+        min-height: 85px;
+    }
+
+    .about-stat strong {
+        font-size: 26px;
+    }
+
+    .about-stat span:last-child {
+        font-size: 10px;
+    }
+
+    .about-mission-section,
+    .about-why-section,
+    .about-values-section {
+        padding: 45px 0;
+    }
+
+    .about-section-heading {
+        margin-bottom: 22px;
+    }
+
+    .about-large-card {
+        padding: 23px;
+    }
+
+    .about-value-card {
+        min-height: 240px;
+        padding: 23px;
+    }
+
+    .about-final-cta {
+        margin: 15px 0 35px;
+        padding: 45px 20px;
+    }
+
+}
+/* ---------------------------------------------------------
+   2. HERO ENTRANCE
+--------------------------------------------------------- */
+
+.about-hero-text {
+    animation: heroTextReveal 1s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.about-premium-image-wrapper {
+    animation: heroImageReveal 1.2s cubic-bezier(.16, 1, .3, 1) .15s both;
+}
+
+
+@keyframes heroTextReveal {
+
+    0% {
+        opacity: 0;
+        transform: translateY(70px);
+        filter: blur(8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+
+}
+
+
+@keyframes heroImageReveal {
+
+    0% {
+        opacity: 0;
+        transform: translateX(80px) scale(.9);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   3. EYEBROW
+--------------------------------------------------------- */
+
+.about-eyebrow {
+    animation:
+        eyebrowReveal .8s ease both,
+        eyebrowFloat 4s ease-in-out 1s infinite;
+}
+
+
+@keyframes eyebrowReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+@keyframes eyebrowFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   4. TITLE LINE ANIMATION
+--------------------------------------------------------- */
+
+.about-title-line {
+    transform-origin: left;
+
+    animation:
+        titleLineReveal 1s cubic-bezier(.16,1,.3,1) .5s both,
+        titleLineGlow 3s ease-in-out 1.5s infinite;
+}
+
+
+@keyframes titleLineReveal {
+
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 90px;
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes titleLineGlow {
+
+    0%,
+    100% {
+        opacity: .7;
+        transform: scaleX(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleX(1.15);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   5. HERO BUTTON
+--------------------------------------------------------- */
+
+.about-hero-button {
+    transition:
+        transform .35s cubic-bezier(.16,1,.3,1),
+        box-shadow .35s ease;
+}
+
+
+.about-hero-button:hover {
+    transform: translateY(-6px) scale(1.03);
+}
+
+
+.about-hero-button:active {
+    transform: scale(.97);
+}
+
+
+/* ---------------------------------------------------------
+   6. IMAGE FLOAT
+--------------------------------------------------------- */
+
+.about-premium-image-wrapper {
+    will-change: transform;
+}
+
+
+.about-premium-image {
+    animation: imageFloat 6s ease-in-out infinite;
+}
+
+
+@keyframes imageFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   7. BACKDROP FLOAT
+--------------------------------------------------------- */
+
+.about-image-backdrop {
+    animation: backdropPulse 5s ease-in-out infinite;
+}
+
+
+@keyframes backdropPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: .7;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   8. SCROLL REVEAL
+--------------------------------------------------------- */
+
+.about-reveal {
+    opacity: 0;
+
+    transform:
+        translateY(70px)
+        scale(.96);
+
+    filter: blur(5px);
+
+    transition:
+        opacity 1s cubic-bezier(.16,1,.3,1),
+        transform 1s cubic-bezier(.16,1,.3,1),
+        filter 1s ease;
+}
+
+
+.about-reveal.active {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter: blur(0);
+}
+
+
+/* ---------------------------------------------------------
+   9. DIFFERENT DIRECTIONS
+--------------------------------------------------------- */
+
+.about-reveal-left {
+    transform:
+        translateX(-80px)
+        scale(.96);
+
+    opacity: 0;
+}
+
+
+.about-reveal-right {
+    transform:
+        translateX(80px)
+        scale(.96);
+
+    opacity: 0;
+}
+
+
+.about-reveal-left.active,
+.about-reveal-right.active {
+    transform:
+        translateX(0)
+        scale(1);
+
+    opacity: 1;
+}
+
+
+/* ---------------------------------------------------------
+   10. STAGGER EFFECT
+--------------------------------------------------------- */
+
+.about-large-card:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.about-large-card:nth-child(2) {
+    transition-delay: .2s;
+}
+
+
+.about-value-card:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.about-value-card:nth-child(2) {
+    transition-delay: .18s;
+}
+
+.about-value-card:nth-child(3) {
+    transition-delay: .31s;
+}
+
+
+.about-benefit:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.about-benefit:nth-child(2) {
+    transition-delay: .15s;
+}
+
+.about-benefit:nth-child(3) {
+    transition-delay: .25s;
+}
+
+.about-benefit:nth-child(4) {
+    transition-delay: .35s;
+}
+
+
+/* ---------------------------------------------------------
+   11. PREMIUM CARD HOVER
+--------------------------------------------------------- */
+
+.about-large-card,
+.about-value-card {
+    transition:
+        transform .5s cubic-bezier(.16,1,.3,1),
+        box-shadow .5s ease,
+        border-color .5s ease;
+}
+
+
+.about-large-card:hover,
+.about-value-card:hover {
+    transform:
+        translateY(-12px)
+        scale(1.015);
+}
+
+
+/* ---------------------------------------------------------
+   12. CARD LIGHT SWEEP
+--------------------------------------------------------- */
+
+.about-large-card::before,
+.about-value-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.12),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left .8s ease;
+}
+
+
+.about-large-card:hover::before,
+.about-value-card:hover::before {
+    left: 140%;
+}
+
+
+/* ---------------------------------------------------------
+   13. ICON HOVER
+--------------------------------------------------------- */
+
+.about-card-icon,
+.about-value-card > i {
+    transition:
+        transform .4s cubic-bezier(.16,1,.3,1),
+        box-shadow .4s ease;
+}
+
+
+.about-large-card:hover .about-card-icon,
+.about-value-card:hover > i {
+    transform:
+        translateY(-5px)
+        rotate(-5deg)
+        scale(1.08);
+}
+
+
+/* ---------------------------------------------------------
+   14. BENEFIT HOVER
+--------------------------------------------------------- */
+
+.about-benefit {
+    position: relative;
+
+    transition:
+        transform .4s ease,
+        padding-left .4s ease;
+}
+
+
+.about-benefit::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 0;
+
+    transition: height .4s ease;
+}
+
+
+.about-benefit:hover {
+    transform: translateX(10px);
+    padding-left: 15px;
+}
+
+
+.about-benefit:hover::before {
+    height: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   15. STAT COUNTER HOVER
+--------------------------------------------------------- */
+
+.about-stat {
+    transition:
+        transform .4s cubic-bezier(.16,1,.3,1),
+        background .4s ease;
+}
+
+
+.about-stat strong {
+    transition:
+        transform .4s ease;
+}
+
+
+.about-stat:hover {
+    transform: translateY(-8px);
+}
+
+
+.about-stat:hover strong {
+    transform: scale(1.1);
+}
+
+
+/* ---------------------------------------------------------
+   16. BACKGROUND ORB MOVEMENT
+--------------------------------------------------------- */
+
+.about-hero-orb {
+    pointer-events: none;
+
+    animation:
+        orbFloat 9s ease-in-out infinite alternate;
+}
+
+
+.about-orb-two {
+    animation-delay: -4s;
+}
+
+
+@keyframes orbFloat {
+
+    0% {
+        transform:
+            translate3d(0,0,0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(40px,-30px,0)
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translate3d(-20px,40px,0)
+            scale(.95);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   17. CTA REVEAL
+--------------------------------------------------------- */
+
+.about-final-cta {
+    overflow: hidden;
+}
+
+
+.about-final-cta::before {
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    top: -150px;
+    left: -150px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.06);
+
+    animation:
+        ctaOrb 8s ease-in-out infinite alternate;
+}
+
+
+.about-final-cta::after {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    right: -120px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.05);
+
+    animation:
+        ctaOrb 7s ease-in-out infinite alternate-reverse;
+}
+
+
+@keyframes ctaOrb {
+
+    from {
+        transform: translate(0,0) scale(1);
+    }
+
+    to {
+        transform: translate(70px,40px) scale(1.3);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   18. MOUSE GLOW
+--------------------------------------------------------- */
+
+.about-cursor-glow {
+    position: fixed;
+
+    width: 220px;
+    height: 220px;
+
+    pointer-events: none;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    z-index: 9999;
+
+    opacity: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.10) 0%,
+            rgba(255,255,255,.04) 30%,
+            transparent 70%
+        );
+
+    transition:
+        opacity .4s ease;
+}
+
+
+/* ---------------------------------------------------------
+   19. IMAGE 3D TILT
+--------------------------------------------------------- */
+
+#about-image-container {
+    transform-style: preserve-3d;
+
+    transition:
+        transform .15s ease-out;
+}
+
+
+#about-image {
+    transition:
+        transform .5s ease;
+}
+
+
+/* ---------------------------------------------------------
+   20. SCROLL PROGRESS
+--------------------------------------------------------- */
+
+.about-scroll-progress {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 0;
+
+    height: 3px;
+
+    z-index: 10000;
+
+    transition: width .08s linear;
+
+    /* Uses your existing theme through currentColor */
+    color: inherit;
+}
+
+
+/* ---------------------------------------------------------
+   21. MOBILE
+--------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .about-cursor-glow {
+        display: none;
+    }
+
+    .about-premium-image {
+        animation-duration: 7s;
+    }
+
+    .about-reveal {
+        transform:
+            translateY(40px)
+            scale(.98);
+    }
+
+    .about-large-card:hover,
+    .about-value-card:hover {
+        transform: translateY(-6px);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   22. ACCESSIBILITY
+--------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+
+        transition:
+            opacity .2s ease !important;
+
+        scroll-behavior: auto !important;
+    }
+
+}
+</style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/about.js' %}"></script>
+
+<script src="{% static 'js/about-animation.js' %}?v=3"></script>
+
+{% endblock %}

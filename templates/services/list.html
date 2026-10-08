@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Services | Nexa Site Creative
+{% endblock %}
+
+{% block meta_description %}
+    Explore our professional digital services and solutions.
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <div class="text-center" data-aos="fade-up">
+
+            <span class="text-primary fw-bold">
+                WHAT WE DO
+            </span>
+
+            <h1 class="display-5 fw-bold mt-2">
+                Our Services
+            </h1>
+
+            <p class="text-muted mx-auto mt-3 services-page-description">
+                Professional digital solutions designed to help
+                your business grow and succeed.
+            </p>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div
+            id="services-page-container"
+            class="row g-4"
+        ></div>
+
+        <div
+            id="services-no-results"
+            class="text-center py-5 d-none"
+        >
+
+            <div class="mb-3">
+                <i class="bi bi-grid display-4 text-muted"></i>
+            </div>
+
+            <h4 class="fw-bold">
+                No Services Found
+            </h4>
+
+            <p class="text-muted">
+                Our services are currently unavailable.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'js/services-animation.js' %}?v=2"></script>
+<script src="{% static 'js/services-page.js' %}?v=1"></script>
+
+{% endblock %}

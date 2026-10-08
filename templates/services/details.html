@@ -1,0 +1,766 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Service Details | Nexa Site Creative
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/service-detail.css' %}">
+
+<!-- =========================================
+     PREMIUM SERVICE HERO
+========================================= -->
+<!-- 
+<section class="service-hero">
+
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+
+    <div class="hero-lines"></div>
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>OUR SERVICES</span>
+            </div>
+
+            <h1>
+                Professional solutions.
+                <span>Built around you.</span>
+            </h1>
+
+            <p>
+                Discover how our expertise, technology and attention
+                to detail can help transform your ideas into meaningful results.
+            </p>
+
+            
+
+        </div>
+
+    </div>
+
+    <div class="hero-bottom">
+        <div class="hero-breadcrumb">
+
+                <a href="/">
+                    Home
+                </a>
+
+                <i class="bi bi-chevron-right"></i>
+
+                <a href="/services/">
+                    Services
+                </a>
+
+                <i class="bi bi-chevron-right"></i>
+
+                <span>
+                    Details
+                </span>
+
+        </div>
+        <span>
+            PREMIUM DIGITAL SOLUTIONS
+        </span>
+
+        <span class="scroll-text">
+            SCROLL TO EXPLORE
+            <i class="bi bi-arrow-down"></i>
+        </span>
+
+    </div>
+
+</section> -->
+
+
+<!-- =========================================
+     MAIN SERVICE
+========================================= -->
+
+<section class="service-main">
+
+        <div class="container">
+            <div class="service-breadcrumb">
+            <a href="/">
+                <i class="bi bi-house"></i>
+                Home
+            </a>
+
+            <i class="bi bi-chevron-right"></i>
+
+            <a href="/services/">
+                Services
+            </a>
+
+            <i class="bi bi-chevron-right"></i>
+
+            <span>Service Details</span>
+        </div>
+        <!-- LOADING -->
+
+        <div
+            id="service-loading"
+            class="service-loading"
+        >
+
+            <div class="premium-loader"></div>
+
+            <h5>
+                Preparing your experience
+            </h5>
+
+            <p>
+                Loading service details...
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="service-error"
+            class="service-error d-none"
+        >
+
+            <div class="error-icon">
+                <i class="bi bi-exclamation-circle"></i>
+            </div>
+
+            <h2>
+                Service not found
+            </h2>
+
+            <p>
+                The service you're looking for is currently unavailable.
+            </p>
+
+            <a
+                href="/services/"
+                class="premium-button"
+            >
+                Explore Services
+                <i class="bi bi-arrow-up-right"></i>
+            </a>
+
+        </div>
+
+
+        <!-- SERVICE CONTENT -->
+
+        <div
+            id="service-content"
+            class="d-none"
+        >
+
+            <!-- =========================================
+                 SERVICE INTRO
+            ========================================= -->
+
+            <div class="service-layout">
+
+
+                <!-- IMAGE SIDE -->
+
+                <div class="service-image-area reveal-left">
+
+                    <div class="service-image-card">
+
+                        <div class="image-top">
+
+                            <div class="image-tag">
+
+                                <span class="live-dot"></span>
+
+                                PROFESSIONAL SERVICE
+
+                            </div>
+
+                            <div class="image-number">
+                                01
+                            </div>
+
+                        </div>
+
+
+                        <img
+                            id="service-image"
+                            src=""
+                            alt=""
+                        >
+
+
+                        <div class="image-gradient"></div>
+
+
+                        <div class="image-bottom">
+
+                            <div class="image-icon">
+
+                                <i
+                                    id="service-icon"
+                                    class="bi bi-stars"
+                                ></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    OUR EXPERTISE
+                                </span>
+
+                                <h4>
+                                    Excellence in every detail.
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="image-footer">
+
+                        <span>
+                            QUALITY
+                        </span>
+
+                        <span>
+                            INNOVATION
+                        </span>
+
+                        <span>
+                            EXPERIENCE
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEXT SIDE -->
+
+                <div class="service-information reveal-right">
+
+                    <div class="section-label">
+
+                        <span></span>
+
+                        SERVICE OVERVIEW
+
+                    </div>
+
+
+                    <h2
+                        id="service-title"
+                        class="service-title"
+                    >
+                    </h2>
+
+
+                    <p
+                        id="service-short-description"
+                        class="service-short-description"
+                    >
+                    </p>
+
+
+                    <div class="title-line">
+                        <span></span>
+                    </div>
+
+
+                    <div class="description-heading">
+
+                        <div class="heading-icon">
+
+                            <i class="bi bi-layers"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                WHAT WE OFFER
+                            </span>
+
+                            <h3>
+                                Designed for your goals
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="service-full-description"
+                        class="service-description"
+                    >
+                    </div>
+
+
+                    <!-- TRUST BOX -->
+
+                    <div class="trust-box">
+
+                        <div class="trust-icon">
+
+                            <i class="bi bi-patch-check-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5>
+                                Professional & Reliable
+                            </h5>
+
+                            <p>
+                                We focus on quality, communication
+                                and delivering solutions that create
+                                real value.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- WHATSAPP -->
+
+                    <div class="service-actions">
+
+                        <a
+                            id="whatsapp-service-button"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="premium-button whatsapp-button"
+                        >
+
+                            <i class="bi bi-whatsapp"></i>
+
+                            <span>
+                                Discuss Your Requirements
+                            </span>
+
+                            <i class="bi bi-arrow-up-right button-arrow"></i>
+
+                        </a>
+
+                        <div class="action-note">
+
+                            <i class="bi bi-chat-dots"></i>
+
+                            Let's discuss your project
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 WHY CHOOSE US
+            ========================================= -->
+
+            <!-- =========================================
+     WHY WORK WITH US
+========================================= -->
+
+
+
+    <div class="benefits-header">
+
+        <div class="section-label">
+            <span></span>
+            WHY WORK WITH US
+            <span></span>
+        </div>
+
+        <h2>
+            More than a service.
+            <span>A complete experience.</span>
+        </h2>
+
+        <p>
+            We combine expertise, creativity and technology to
+            provide a smooth experience from the first conversation
+            to the final result.
+        </p>
+
+    </div>
+
+
+    <div class="benefits-grid">
+
+        <!-- CARD 01 -->
+        <div class="benefit-card">
+
+            <div class="card-top">
+                <span class="benefit-number">01</span>
+
+                <div class="benefit-icon">
+                    <i class="bi bi-bullseye"></i>
+                </div>
+            </div>
+
+            <div class="card-content">
+
+                <span class="card-label">
+                    CUSTOM APPROACH
+                </span>
+
+                <h3>
+                    Tailored Solutions
+                </h3>
+
+                <p>
+                    Every requirement is different. Our approach
+                    is designed around your specific business goals.
+                </p>
+
+            </div>
+
+            <div class="card-arrow">
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- CARD 02 -->
+        <div class="benefit-card">
+
+            <div class="card-top">
+                <span class="benefit-number">02</span>
+
+                <div class="benefit-icon">
+                    <i class="bi bi-gem"></i>
+                </div>
+            </div>
+
+            <div class="card-content">
+
+                <span class="card-label">
+                    PREMIUM QUALITY
+                </span>
+
+                <h3>
+                    Quality Focus
+                </h3>
+
+                <p>
+                    We pay attention to the details that make
+                    a solution professional, reliable and easy to use.
+                </p>
+
+            </div>
+
+            <div class="card-arrow">
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- CARD 03 -->
+        <div class="benefit-card">
+
+            <div class="card-top">
+                <span class="benefit-number">03</span>
+
+                <div class="benefit-icon">
+                    <i class="bi bi-headset"></i>
+                </div>
+            </div>
+
+            <div class="card-content">
+
+                <span class="card-label">
+                    DEDICATED SUPPORT
+                </span>
+
+                <h3>
+                    Personal Support
+                </h3>
+
+                <p>
+                    Clear communication and dedicated support
+                    throughout your project journey.
+                </p>
+
+            </div>
+
+            <div class="card-arrow">
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+            <!-- =========================================
+                 PROCESS
+            ========================================= -->
+
+            <!-- =========================================
+     OUR PROCESS
+========================================= -->
+
+<div class="process-section reveal-up">
+
+    <div class="process-heading">
+
+        <div class="section-label">
+            <span></span>
+            OUR APPROACH
+            <span></span>
+        </div>
+
+        <h2>
+            Simple process.
+            <span>Powerful results.</span>
+        </h2>
+
+        <p>
+            From understanding your idea to delivering the final solution,
+            we follow a clear and focused approach.
+        </p>
+
+    </div>
+
+
+    <div class="process-grid">
+
+        <!-- STEP 01 -->
+        <div class="process-item">
+
+            <div class="process-top">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <div class="process-icon">
+                    <i class="bi bi-chat-square-text"></i>
+                </div>
+
+            </div>
+
+            <div class="process-content">
+
+                <span class="process-label">
+                    DISCOVER
+                </span>
+
+                <h4>
+                    Understand
+                </h4>
+
+                <p>
+                    We understand your requirements,
+                    objectives and expectations.
+                </p>
+
+            </div>
+
+            <div class="process-bottom">
+                <span>STEP ONE</span>
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- CONNECTOR -->
+        <div class="process-connector">
+            <span></span>
+        </div>
+
+
+        <!-- STEP 02 -->
+        <div class="process-item">
+
+            <div class="process-top">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <div class="process-icon">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+
+            </div>
+
+            <div class="process-content">
+
+                <span class="process-label">
+                    STRATEGY
+                </span>
+
+                <h4>
+                    Plan
+                </h4>
+
+                <p>
+                    We create a clear approach tailored
+                    to your requirements.
+                </p>
+
+            </div>
+
+            <div class="process-bottom">
+                <span>STEP TWO</span>
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- CONNECTOR -->
+        <div class="process-connector">
+            <span></span>
+        </div>
+
+
+        <!-- STEP 03 -->
+        <div class="process-item">
+
+            <div class="process-top">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <div class="process-icon">
+                    <i class="bi bi-rocket-takeoff"></i>
+                </div>
+
+            </div>
+
+            <div class="process-content">
+
+                <span class="process-label">
+                    EXECUTION
+                </span>
+
+                <h4>
+                    Deliver
+                </h4>
+
+                <p>
+                    We turn the plan into a professional
+                    solution designed for results.
+                </p>
+
+            </div>
+
+            <div class="process-bottom">
+                <span>STEP THREE</span>
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+            <!-- =========================================
+                 FINAL CTA
+            ========================================= -->
+
+            <div class="final-cta reveal-up">
+
+                <div class="cta-circle"></div>
+
+                <div class="cta-content">
+
+                    <span>
+                        LET'S WORK TOGETHER
+                    </span>
+
+                    <h2>
+                        Have a project in mind?
+                    </h2>
+
+                    <p>
+                        Tell us what you're looking for.
+                        Let's start a conversation and explore
+                        how we can help.
+                    </p>
+
+                </div>
+
+
+                <a
+                    id="whatsapp-bottom-button"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="cta-button"
+                >
+
+                    Start a Conversation
+
+                    <i class="bi bi-arrow-up-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FLOATING WHATSAPP -->
+
+<a
+    id="floating-whatsapp"
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="floating-whatsapp"
+    aria-label="Chat on WhatsApp"
+>
+
+    <i class="bi bi-whatsapp"></i>
+
+    <span>
+        Chat with us
+    </span>
+
+</a>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'js/service-detail.js' %}"
+    defer
+></script>
+
+{% endblock %}
