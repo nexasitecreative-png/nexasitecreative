@@ -12,6 +12,8 @@ from rest_framework import status
 
 from .models import EmailOTP
 from .serializers import *
+import requests
+from django.conf import settings
 
 class QuoteRequestCreateView(APIView):
 
@@ -83,11 +85,12 @@ class SendQuoteOTPView(APIView):
             response.raise_for_status()
 
         except requests.RequestException as exc:
-            print(
-                "Resend email error:",
-                type(exc).__name__,
-                getattr(getattr(exc, "response", None), "status_code", None),
-            )
+            error_response = getattr(exc, "response", None)
+
+            print("Resend error type:", type(exc).__name__)
+            print("Resend status:", getattr(error_response, "status_code", None))
+            print("Resend response:", getattr(error_response, "text", ""))
+
             return Response(
                 {"detail": "Unable to send the verification email. Please try again."},
                 status=status.HTTP_502_BAD_GATEWAY
