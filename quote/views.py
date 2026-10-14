@@ -42,68 +42,70 @@ class QuoteRequestCreateView(APIView):
         )
 
 class SendQuoteOTPView(APIView):
-
     def post(self, request):
-
-        serializer = SendOTPSerializer(
-            data=request.data
-        )
+        serializer = SendOTPSerializer(data=request.data)
 
         if not serializer.is_valid():
-
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        email = serializer.validated_data['email']
+        email = serializer.validated_data["email"]
 
-        # Delete previous unused OTP
+        if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
+            return Response(
+                {"detail": "Email service is not configured."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
+
+        otp = str(__import__("secrets").randbelow(900000) + 100000)
+
+        try:
+            response = requests.post(
+                "https://api.resend.com/emails",
+                headers={
+                    "Authorization": f"Bearer {settings.RESEND_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "from": settings.RESEND_FROM_EMAIL,
+                    "to": [email],
+                    "subject": "Your Email Verification Code",
+                    "text": (
+                        f"Your verification code is: {otp}\n\n"
+                        "This code will expire in 5 minutes.\n\n"
+                        "If you did not request a quote, please ignore this email."
+                    ),
+                },
+                timeout=15,
+            )
+            response.raise_for_status()
+
+        except requests.RequestException as exc:
+            print(
+                "Resend email error:",
+                type(exc).__name__,
+                getattr(getattr(exc, "response", None), "status_code", None),
+            )
+            return Response(
+                {"detail": "Unable to send the verification email. Please try again."},
+                status=status.HTTP_502_BAD_GATEWAY
+            )
+
+        # Save the OTP only after Resend accepts the email request.
         EmailOTP.objects.filter(
-            email=email,
-            is_verified=False
+            email=email, is_verified=False
         ).delete()
 
-        # Generate 6-digit OTP
-        otp = str(
-            __import__('secrets').randbelow(900000) + 100000
-        )
-
-        # Save OTP
         EmailOTP.objects.create(
             email=email,
             otp=otp,
-            expires_at=(
-                timezone.now()
-                + timedelta(minutes=5)
-            )
-        )
-
-        # Send email
-        send_mail(
-            subject='Your Email Verification Code',
-
-            message=(
-                f'Your verification code is: {otp}\n\n'
-                'This code will expire in 5 minutes.\n\n'
-                'If you did not request a quote, '
-                'please ignore this email.'
-            ),
-
-            from_email=None,
-
-            recipient_list=[
-                email
-            ],
-
-            fail_silently=False
+            expires_at=timezone.now() + timedelta(minutes=5),
         )
 
         return Response(
-            {
-                'message':
-                    'Verification code sent to your email.'
-            },
+            {"message": "Verification code sent to your email."},
             status=status.HTTP_200_OK
         )
 
