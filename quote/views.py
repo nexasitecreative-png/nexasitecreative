@@ -1,21 +1,26 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+
+import base64
+import logging
+import os
+import secrets
 from datetime import timedelta
+from email.message import EmailMessage
 
-from django.core.mail import send_mail
 from django.utils import timezone
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import EmailOTP
-from .serializers import *
-import requests
-from django.conf import settings
-import secrets
-import logging
+from .serializers import (
+    QuoteRequestSerializer,
+    SendOTPSerializer,
+    VerifyOTPSerializer,
+)
+
+
 class QuoteRequestCreateView(APIView):
 
     def post(self, request):
@@ -58,20 +63,56 @@ class SendQuoteOTPView(APIView):
         email = serializer.validated_data["email"]
         otp = str(secrets.randbelow(900000) + 100000)
 
-        try:
-            send_mail(
-                subject="Your Email Verification Code",
-                message=(
-                    f"Your verification code is: {otp}\n\n"
-                    "This code will expire in 5 minutes.\n\n"
-                    "If you did not request a quote, please ignore this email."
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
-                fail_silently=False,
+        client_id = os.getenv("GMAIL_CLIENT_ID")
+        client_secret = os.getenv("GMAIL_CLIENT_SECRET")
+        refresh_token = os.getenv("GMAIL_REFRESH_TOKEN")
+        sender_email = os.getenv("GMAIL_SENDER_EMAIL")
+
+        if not all([client_id, client_secret, refresh_token, sender_email]):
+            logging.error("Gmail API environment variables are missing.")
+            return Response(
+                {"detail": "Email service is not configured. Please try again later."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
+
+        try:
+            credentials = Credentials(
+                token=None,
+                refresh_token=refresh_token,
+                token_uri="https://oauth2.googleapis.com/token",
+                client_id=client_id,
+                client_secret=client_secret,
+                scopes=["https://www.googleapis.com/auth/gmail.send"],
+            )
+
+            service = build(
+                "gmail",
+                "v1",
+                credentials=credentials,
+                cache_discovery=False,
+            )
+
+            message = EmailMessage()
+            message["To"] = email
+            message["From"] = sender_email
+            message["Subject"] = "Your Email Verification Code"
+            message.set_content(
+                f"Your verification code is: {otp}\n\n"
+                "This code will expire in 5 minutes.\n\n"
+                "If you did not request a quote, please ignore this email."
+            )
+
+            encoded_message = base64.urlsafe_b64encode(
+                message.as_bytes()
+            ).decode("utf-8")
+
+            service.users().messages().send(
+                userId="me",
+                body={"raw": encoded_message},
+            ).execute()
+
         except Exception:
-            logging.exception("Failed to send quote verification email")
+            logging.exception("Failed to send quote verification email via Gmail API")
             return Response(
                 {
                     "detail": (

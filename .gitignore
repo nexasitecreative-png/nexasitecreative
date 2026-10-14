@@ -3,6 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# Gmail API secrets and local authorization script
+render_data.json
+gmail_oauth_client.json
+gmail_oauth_client.json.json
+gmail_token.json
+gmail_auth.py
+
+# Unnecessary local file
+python
+
 # Virtual environment
 venv/
 .venv/
