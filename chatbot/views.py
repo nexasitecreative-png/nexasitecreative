@@ -141,7 +141,7 @@ def send_answer(request):
         if question.answer_type == "phone" and answer:
             import re
 
-            if not re.fullmatch(r"[0-9+\-() ]{7,20}", answer):
+            if not re.fullmatch(r"[0-9]{10}", answer):
                 return JsonResponse(
                     {"error": "Please enter a valid phone number."},
                     status=400,

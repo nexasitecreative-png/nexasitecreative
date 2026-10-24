@@ -248,6 +248,18 @@
 
             input.type = question.type === "email" ? "email" : "text";
             input.inputMode = question.type === "phone" ? "tel" : "text";
+            if (question.type === "phone") {
+                input.maxLength = 10;
+                input.minLength = 10;
+                input.pattern = "[0-9]{10}";
+                input.placeholder = "Enter your 10-digit phone number";
+                input.title = "Please enter exactly 10 digits.";
+            } else {
+                input.maxLength = question.type === "textarea" ? 5000 : 500;
+                input.removeAttribute("minlength");
+                input.removeAttribute("pattern");
+                input.removeAttribute("title");
+            }
             input.maxLength = question.type === "textarea" ? 5000 : 500;
         }
 
