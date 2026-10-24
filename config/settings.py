@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "companyinfo",
     "cloudinary_storage",
-    "cloudinary"
+    "cloudinary",
+    "chatbot"
 ]
 
 MIDDLEWARE = [

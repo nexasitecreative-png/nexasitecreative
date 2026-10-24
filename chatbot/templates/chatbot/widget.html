@@ -1,0 +1,415 @@
+
+{% load static %}
+
+<style>
+    #nexa-chat-button {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 50%;
+        background: #0759d6;
+        color: white;
+        font-size: 25px;
+        box-shadow: 0 5px 18px #0003;
+        cursor: pointer;
+        z-index: 9999;
+    }
+
+    #nexa-chat-window {
+        position: fixed;
+        right: 24px;
+        bottom: 98px;
+        width: 350px;
+        height: 460px;
+        max-width: calc(100vw - 24px);
+        max-height: calc(100dvh - 110px);
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 35px #0003;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+    }
+
+    #nexa-chat-window[hidden] {
+        display: none;
+    }
+
+    .nexa-header {
+        background: #0759d6;
+        color: white;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nexa-header button {
+        color: white;
+        background: none;
+        border: none;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    #nexa-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        background: #f5f7fb;
+    }
+
+    .nexa-message {
+        width: fit-content;
+        max-width: 90%;
+        padding: 11px 13px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .nexa-bot {
+        background: white;
+        color: #263449;
+        border: 1px solid #e7eaf0;
+    }
+
+    .nexa-user {
+        background: #0759d6;
+        color: white;
+        margin-left: auto;
+    }
+
+    #nexa-chat-form {
+        display: flex;
+        gap: 8px;
+        padding: 12px;
+        border-top: 1px solid #eee;
+        background: white;
+    }
+
+    #nexa-chat-input {
+        flex: 1;
+        min-width: 0;
+        padding: 10px;
+        border: 1px solid #d5dbe5;
+        border-radius: 9px;
+        font-size: 14px;
+    }
+
+    #nexa-chat-send {
+        padding: 10px 14px;
+        background: #0759d6;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        cursor: pointer;
+    }
+
+    #nexa-chat-send:disabled {
+        opacity: 0.6;
+        cursor: wait;
+    }
+
+    #nexa-chat-status {
+        font-size: 12px;
+        color: #b42318;
+        padding: 0 12px 8px;
+    }
+
+    @media (max-width: 480px) {
+        #nexa-chat-window {
+            right: 12px;
+            bottom: 84px;
+            width: calc(100vw - 24px);
+        }
+
+        #nexa-chat-button {
+            right: 16px;
+            bottom: 16px;
+        }
+    }
+</style>
+
+<!-- Provides a CSRF token for secure Django POST requests -->
+<form id="nexa-csrf-form" hidden>
+    {% csrf_token %}
+</form>
+
+<button
+    id="nexa-chat-button"
+    type="button"
+    aria-label="Open chat"
+    aria-expanded="false"
+    aria-controls="nexa-chat-window"
+>
+    <i class="bi bi-chat-dots-fill"></i>
+</button>
+
+<section id="nexa-chat-window" aria-label="NexaSiteCreative chat" hidden>
+    <div class="nexa-header">
+        <div>
+            <strong id="nexa-chat-title">NexaSiteCreative</strong>
+            <div style="font-size:12px;margin-top:4px">
+                We're here to help!
+            </div>
+        </div>
+
+        <button id="nexa-chat-close" type="button" aria-label="Close chat">
+            &times;
+        </button>
+    </div>
+
+    <div id="nexa-chat-messages" aria-live="polite"></div>
+
+    <div id="nexa-chat-status" role="status"></div>
+
+    <form id="nexa-chat-form">
+        <input
+            id="nexa-chat-input"
+            type="text"
+            placeholder="Type your answer..."
+            aria-label="Your answer"
+            autocomplete="off"
+            required
+        >
+        <button id="nexa-chat-send" type="submit">Send</button>
+    </form>
+</section>
+
+<script>
+(function () {
+    const button = document.getElementById("nexa-chat-button");
+    const windowBox = document.getElementById("nexa-chat-window");
+    const closeButton = document.getElementById("nexa-chat-close");
+    const messages = document.getElementById("nexa-chat-messages");
+    const form = document.getElementById("nexa-chat-form");
+    const input = document.getElementById("nexa-chat-input");
+    const sendButton = document.getElementById("nexa-chat-send");
+    const statusBox = document.getElementById("nexa-chat-status");
+    const csrfInput = document.querySelector(
+        "#nexa-csrf-form [name=csrfmiddlewaretoken]"
+    );
+
+    if (!button || !windowBox || !csrfInput) return;
+
+    const startUrl = "{% url 'chatbot:start_chat' %}";
+    const answerUrl = "{% url 'chatbot:send_answer' %}";
+
+    let sessionId = null;
+    let currentQuestion = null;
+    let started = false;
+    let busy = false;
+    let completed = false;
+
+    function addMessage(text, sender) {
+        const message = document.createElement("div");
+        message.className = "nexa-message nexa-" + sender;
+        message.textContent = text;
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function setStatus(text) {
+        statusBox.textContent = text || "";
+    }
+
+    function setBusy(value) {
+        busy = value;
+        sendButton.disabled = value;
+        input.disabled = value;
+    }
+
+    function renderQuestion(question) {
+        currentQuestion = question;
+        form.hidden = false;
+        input.value = "";
+        input.required = question.required;
+        input.placeholder = question.required
+            ? "Type your answer..."
+            : "Type your answer (optional)...";
+
+        if (question.type === "choice") {
+            input.replaceWith(createChoiceInput(question));
+        } else {
+            const current = document.getElementById("nexa-chat-input");
+
+            if (current.tagName !== "INPUT") {
+                current.replaceWith(input);
+            }
+
+            input.type = question.type === "email" ? "email" : "text";
+            input.inputMode = question.type === "phone" ? "tel" : "text";
+            input.maxLength = question.type === "textarea" ? 5000 : 500;
+        }
+
+        const activeInput = document.getElementById("nexa-chat-input");
+        activeInput.required = question.required;
+        activeInput.disabled = false;
+        activeInput.focus();
+    }
+
+    function createChoiceInput(question) {
+        const select = document.createElement("select");
+        select.id = "nexa-chat-input";
+        select.setAttribute("aria-label", "Choose an option");
+        select.style.cssText =
+            "flex:1;min-width:0;padding:10px;border:1px solid #d5dbe5;" +
+            "border-radius:9px;font-size:14px;background:white";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Select an option...";
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        (question.options || []).forEach(function (option) {
+            const item = document.createElement("option");
+            item.value = option.value;
+            item.textContent = option.label;
+            select.appendChild(item);
+        });
+
+        return select;
+    }
+
+    async function postData(url, payload) {
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfInput.value
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong.");
+        }
+
+        return data;
+    }
+
+    async function startChat() {
+        if (started || busy) return;
+
+        started = true;
+        setBusy(true);
+        setStatus("Connecting...");
+
+        try {
+            const data = await postData(startUrl, {});
+            sessionId = data.session_id;
+
+            document.getElementById("nexa-chat-title").textContent =
+                "NexaSiteCreative";
+
+            addMessage(data.welcome_message, "bot");
+
+            if (data.completed) {
+                completed = true;
+                form.hidden = true;
+                addMessage(
+                    "There are no active questions at the moment. Please contact our team.",
+                    "bot"
+                );
+                return;
+            }
+
+            if (data.question) {
+                addMessage(data.question.text, "bot");
+                renderQuestion(data.question);
+            }
+        } catch (error) {
+            started = false;
+            setStatus(error.message);
+        } finally {
+            setBusy(false);
+        }
+
+        if (completed) {
+            form.hidden = true;
+        }
+    }
+
+    button.addEventListener("click", function () {
+        windowBox.hidden = !windowBox.hidden;
+        button.setAttribute("aria-expanded", String(!windowBox.hidden));
+        button.innerHTML = windowBox.hidden
+            ? '<i class="bi bi-chat-dots-fill"></i>'
+            : '<i class="bi bi-x-lg"></i>';
+
+        if (!windowBox.hidden) {
+            startChat();
+        }
+    });
+
+    closeButton.addEventListener("click", function () {
+        windowBox.hidden = true;
+        button.setAttribute("aria-expanded", "false");
+        button.innerHTML = '<i class="bi bi-chat-dots-fill"></i>';
+    });
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!sessionId || !currentQuestion || busy || completed) return;
+
+        const activeInput = document.getElementById("nexa-chat-input");
+        const answer = activeInput.value.trim();
+
+        if (currentQuestion.required && !answer) {
+            activeInput.reportValidity();
+            return;
+        }
+
+        if (currentQuestion.type === "choice" && !answer) {
+            setStatus("Please select an option.");
+            return;
+        }
+
+        setBusy(true);
+        setStatus("");
+
+        try {
+            const submittedQuestion = currentQuestion;
+
+            const data = await postData(answerUrl, {
+                session_id: sessionId,
+                question_id: submittedQuestion.id,
+                answer: answer
+            });
+
+            addMessage(answer || "(Skipped)", "user");
+
+            if (data.completed) {
+                completed = true;
+                currentQuestion = null;
+                form.hidden = true;
+                addMessage(data.message, "bot");
+                return;
+            }
+
+            if (data.question) {
+                addMessage(data.question.text, "bot");
+                renderQuestion(data.question);
+            }
+        } catch (error) {
+            setStatus(error.message);
+        } finally {
+            setBusy(false);
+        }
+    });
+})();
+</script>

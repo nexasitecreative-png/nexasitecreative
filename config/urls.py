@@ -19,6 +19,9 @@ urlpatterns = [
     'service/',
     include('projects.urls')
 ),
+
+path("chatbot/", include("chatbot.urls")),
+
 path(
     'projects/',
     projects_page,
