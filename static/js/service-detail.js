@@ -221,7 +221,7 @@ async function loadService() {
 
 
         const whatsappURL =
-            `https://wa.me/916304668991?text=${encodeURIComponent(message)}`;
+            `https://wa.me/919908318360?text=${encodeURIComponent(message)}`;
 
 
         /*
