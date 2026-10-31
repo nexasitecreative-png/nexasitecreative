@@ -203,7 +203,7 @@ EMAIL_HOST = os.getenv(
     "smtp-relay.brevo.com"
 )
 
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 2525))
 
 EMAIL_USE_TLS = os.getenv(
     "EMAIL_USE_TLS",
