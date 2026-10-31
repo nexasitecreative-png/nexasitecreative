@@ -2,6 +2,7 @@
 import logging
 import secrets
 from datetime import timedelta
+import requests
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -86,37 +87,36 @@ class SendQuoteOTPView(APIView):
 
         # Send OTP through Brevo SMTP
         try:
-
-            send_mail(
-                subject="Your NexaSiteCreative Email Verification Code",
-
-                message=(
-                    f"Your verification code is: {otp}\n\n"
-                    "This code will expire in 5 minutes.\n\n"
-                    "If you did not request a quote, "
-                    "please ignore this email."
-                ),
-
-                from_email=settings.DEFAULT_FROM_EMAIL,
-
-                recipient_list=[email],
-
-                fail_silently=False,
-            )
-
-        except Exception:
-
-            logger.exception(
-                "Failed to send verification email through Brevo."
-            )
-
-            return Response(
-                {
-                    "detail": (
-                        "Unable to send the verification email. "
-                        "Please try again."
-                    )
+            response = requests.post(
+                "https://api.brevo.com/v3/smtp/email",
+                headers={
+                    "accept": "application/json",
+                    "api-key": settings.BREVO_API_KEY,
+                    "content-type": "application/json",
                 },
+                json={
+                    "sender": {
+                        "name": "NexaSiteCreative",
+                        "email": settings.DEFAULT_FROM_EMAIL,
+                    },
+                    "to": [
+                        {"email": email}
+                    ],
+                    "subject": "Your NexaSiteCreative Email Verification Code",
+                    "textContent": (
+                        f"Your verification code is: {otp}\n\n"
+                        "This code will expire in 5 minutes."
+                    ),
+                },
+                timeout=20,
+            )
+
+            response.raise_for_status()
+
+        except requests.RequestException:
+            logger.exception("Brevo API email sending failed.")
+            return Response(
+                {"detail": "Unable to send the verification email. Please try again."},
                 status=status.HTTP_502_BAD_GATEWAY,
             )
 
