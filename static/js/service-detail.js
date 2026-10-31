@@ -221,7 +221,7 @@ async function loadService() {
 
 
         const whatsappURL =
-            `https://wa.me/916304668991?text=${encodeURIComponent(message)}`;
+            `https://wa.me/919908318360?text=${encodeURIComponent(message)}`;
 
 
         /*
@@ -530,3 +530,138 @@ function setupFloatingWhatsApp() {
     updateButton();
 
 }
+/* =========================================
+   ADVANCED SCROLL REVEAL + CENTER FOCUS
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const animatedCards = document.querySelectorAll(
+        ".benefit-card, .process-item"
+    );
+
+    const revealElements = document.querySelectorAll(
+        ".benefits-header, .benefit-card, .process-item"
+    );
+
+    if (!revealElements.length) {
+        console.warn("No service detail animation elements found.");
+        return;
+    }
+
+    /* 1. Reveal on both downward and upward scrolling */
+    const revealObserver = new IntersectionObserver(
+        function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                } else {
+                    // Remove this class so the animation can replay
+                    // when the visitor scrolls back to the element.
+                    entry.target.classList.remove("is-visible");
+                }
+            });
+        },
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -35px 0px"
+        }
+    );
+
+    revealElements.forEach(function (element, index) {
+        element.classList.add("scroll-reveal");
+
+        // Small stagger between cards
+        if (
+            element.classList.contains("benefit-card") ||
+            element.classList.contains("process-item")
+        ) {
+            element.style.transitionDelay =
+                (index % 3) * 500 + "ms";
+        }
+
+        revealObserver.observe(element);
+    });
+
+    /* 2. Highlight the card closest to the viewport center */
+    let centerFrame = null;
+
+    function updateCenterFocus() {
+        centerFrame = null;
+
+        const viewportCenterX = window.innerWidth / 2;
+        const viewportCenterY = window.innerHeight / 2;
+
+        const visibleCards = [];
+
+        animatedCards.forEach(function (card) {
+            const rect = card.getBoundingClientRect();
+
+            // Ignore cards outside the visible viewport
+            if (
+                rect.bottom <= 0 ||
+                rect.top >= window.innerHeight ||
+                rect.right <= 0 ||
+                rect.left >= window.innerWidth
+            ) {
+                card.classList.remove(
+                    "is-center-card",
+                    "is-side-card"
+                );
+                return;
+            }
+
+            const cardCenterX = rect.left + rect.width / 2;
+            const cardCenterY = rect.top + rect.height / 2;
+
+            const distance = Math.hypot(
+                viewportCenterX - cardCenterX,
+                viewportCenterY - cardCenterY
+            );
+
+            visibleCards.push({
+                card: card,
+                distance: distance
+            });
+        });
+
+        // Remove old focus states
+        animatedCards.forEach(function (card) {
+            card.classList.remove(
+                "is-center-card",
+                "is-side-card"
+            );
+        });
+
+        if (!visibleCards.length) {
+            return;
+        }
+
+        visibleCards.sort(function (a, b) {
+            return a.distance - b.distance;
+        });
+
+        // Closest visible card receives the center effect
+        visibleCards[0].card.classList.add("is-center-card");
+
+        visibleCards.slice(1).forEach(function (item) {
+            item.card.classList.add("is-side-card");
+        });
+    }
+
+    function requestCenterUpdate() {
+        if (centerFrame !== null) {
+            return;
+        }
+
+        centerFrame = requestAnimationFrame(updateCenterFocus);
+    }
+
+    window.addEventListener("scroll", requestCenterUpdate, {
+        passive: true
+    });
+
+    window.addEventListener("resize", requestCenterUpdate);
+
+    // Initial position
+    requestCenterUpdate();
+});

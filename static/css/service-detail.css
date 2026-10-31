@@ -1564,7 +1564,7 @@
 
     z-index: 999;
 
-    right: 25px;
+    right: 95px;
 
     bottom: 25px;
 
@@ -2144,7 +2144,7 @@
 
     .floating-whatsapp {
 
-        right: 16px;
+        right: 86px;
 
         bottom: 16px;
 
@@ -3188,4 +3188,96 @@
         padding: 25px;
     }
 
+}
+
+/* =========================================
+   ADVANCED SCROLL + CENTER-FOCUS ANIMATION
+========================================= */
+
+/* Keep cards visible unless they have entered the reveal process */
+.benefit-card,
+.process-item {
+    transform-origin: center center;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* Initial state for scroll animation */
+.benefit-card.scroll-reveal,
+.process-item.scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 55px, 0) scale(0.94);
+    filter: blur(4px);
+
+    transition:
+        opacity 0.75s ease,
+        transform 0.75s cubic-bezier(.2, .75, .25, 1),
+        filter 0.75s ease,
+        box-shadow 0.45s ease,
+        border-color 0.45s ease;
+}
+
+/* Reveal when the card enters the viewport */
+.benefit-card.scroll-reveal.is-visible,
+.process-item.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+}
+
+/* Center card: brighter and slightly larger */
+.benefit-card.is-center-card,
+.process-item.is-center-card {
+    opacity: 1;
+    filter: blur(0);
+    z-index: 5;
+
+    transform:
+        perspective(1000px)
+        translateY(-7px)
+        scale(1.035);
+
+    border-color: rgba(13, 110, 253, 0.4);
+
+    box-shadow:
+        0 28px 70px rgba(15, 23, 42, 0.14),
+        0 0 25px rgba(13, 110, 253, 0.07);
+}
+
+/* Side cards: retain visibility with a subtle depth effect */
+.benefit-card.is-side-card,
+.process-item.is-side-card {
+    opacity: 0.88;
+    filter: saturate(0.88);
+}
+
+/* Animate the benefit heading too */
+.benefits-header.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
+
+.benefits-header.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+    .benefit-card.scroll-reveal,
+    .process-item.scroll-reveal,
+    .benefits-header.scroll-reveal {
+        opacity: 1;
+        filter: none;
+        transform: none;
+        transition: none;
+    }
+
+    .benefit-card,
+    .process-item {
+        will-change: auto;
+    }
 }

@@ -1,14 +1,12 @@
 
-import base64
 import logging
-import os
 import secrets
 from datetime import timedelta
-from email.message import EmailMessage
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.utils import timezone
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,13 +19,14 @@ from .serializers import (
 )
 
 
+logger = logging.getLogger(__name__)
+
+
 class QuoteRequestCreateView(APIView):
 
     def post(self, request):
 
-        serializer = QuoteRequestSerializer(
-            data=request.data
-        )
+        serializer = QuoteRequestSerializer(data=request.data)
 
         if serializer.is_valid():
 
@@ -35,11 +34,11 @@ class QuoteRequestCreateView(APIView):
 
             return Response(
                 {
-                    'message': (
-                        'Your quote request has been '
-                        'submitted successfully.'
+                    "message": (
+                        "Your quote request has been "
+                        "submitted successfully."
                     ),
-                    'quote_id': quote.id,
+                    "quote_id": quote.id,
                 },
                 status=status.HTTP_201_CREATED
             )
@@ -51,7 +50,9 @@ class QuoteRequestCreateView(APIView):
 
 
 class SendQuoteOTPView(APIView):
+
     def post(self, request):
+
         serializer = SendOTPSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -61,58 +62,54 @@ class SendQuoteOTPView(APIView):
             )
 
         email = serializer.validated_data["email"]
+
+        # Generate secure six-digit OTP
         otp = str(secrets.randbelow(900000) + 100000)
 
-        client_id = os.getenv("GMAIL_CLIENT_ID")
-        client_secret = os.getenv("GMAIL_CLIENT_SECRET")
-        refresh_token = os.getenv("GMAIL_REFRESH_TOKEN")
-        sender_email = os.getenv("GMAIL_SENDER_EMAIL")
+        # Check Brevo SMTP configuration
+        if not all([
+            settings.EMAIL_HOST_USER,
+            settings.EMAIL_HOST_PASSWORD,
+            settings.DEFAULT_FROM_EMAIL,
+        ]):
+            logger.error("Brevo SMTP credentials are missing.")
 
-        if not all([client_id, client_secret, refresh_token, sender_email]):
-            logging.error("Gmail API environment variables are missing.")
             return Response(
-                {"detail": "Email service is not configured. Please try again later."},
+                {
+                    "detail": (
+                        "Email service is not configured. "
+                        "Please try again later."
+                    )
+                },
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
+        # Send OTP through Brevo SMTP
         try:
-            credentials = Credentials(
-                token=None,
-                refresh_token=refresh_token,
-                token_uri="https://oauth2.googleapis.com/token",
-                client_id=client_id,
-                client_secret=client_secret,
-                scopes=["https://www.googleapis.com/auth/gmail.send"],
+
+            send_mail(
+                subject="Your NexaSiteCreative Email Verification Code",
+
+                message=(
+                    f"Your verification code is: {otp}\n\n"
+                    "This code will expire in 5 minutes.\n\n"
+                    "If you did not request a quote, "
+                    "please ignore this email."
+                ),
+
+                from_email=settings.DEFAULT_FROM_EMAIL,
+
+                recipient_list=[email],
+
+                fail_silently=False,
             )
-
-            service = build(
-                "gmail",
-                "v1",
-                credentials=credentials,
-                cache_discovery=False,
-            )
-
-            message = EmailMessage()
-            message["To"] = email
-            message["From"] = sender_email
-            message["Subject"] = "Your Email Verification Code"
-            message.set_content(
-                f"Your verification code is: {otp}\n\n"
-                "This code will expire in 5 minutes.\n\n"
-                "If you did not request a quote, please ignore this email."
-            )
-
-            encoded_message = base64.urlsafe_b64encode(
-                message.as_bytes()
-            ).decode("utf-8")
-
-            service.users().messages().send(
-                userId="me",
-                body={"raw": encoded_message},
-            ).execute()
 
         except Exception:
-            logging.exception("Failed to send quote verification email via Gmail API")
+
+            logger.exception(
+                "Failed to send verification email through Brevo."
+            )
+
             return Response(
                 {
                     "detail": (
@@ -123,7 +120,7 @@ class SendQuoteOTPView(APIView):
                 status=status.HTTP_502_BAD_GATEWAY,
             )
 
-        # Save the OTP only after the email is sent successfully.
+        # Save OTP only after successful email delivery
         EmailOTP.objects.filter(
             email=email,
             is_verified=False,
@@ -136,42 +133,37 @@ class SendQuoteOTPView(APIView):
         )
 
         return Response(
-            {"message": "Verification code sent to your email."},
+            {
+                "message": "Verification code sent to your email."
+            },
             status=status.HTTP_200_OK,
         )
+
 
 class VerifyQuoteOTPView(APIView):
 
     def post(self, request):
-        print("VERIFY REQUEST DATA:", request.data)
-        serializer = VerifyOTPSerializer(
-            data=request.data
-        )
+
+        serializer = VerifyOTPSerializer(data=request.data)
 
         if not serializer.is_valid():
-            print(
-                "VERIFY SERIALIZER ERRORS:",
-                serializer.errors
-            )
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        email = serializer.validated_data['email']
-        otp = serializer.validated_data['otp']
+        email = serializer.validated_data["email"]
+        otp = serializer.validated_data["otp"]
 
         verification = EmailOTP.objects.filter(
             email=email,
             is_verified=False
-        ).order_by('-created_at').first()
+        ).order_by("-created_at").first()
 
         if not verification:
-
             return Response(
                 {
-                    'detail':
-                        'Verification code not found.'
+                    "detail": "Verification code not found."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -183,8 +175,7 @@ class VerifyQuoteOTPView(APIView):
 
             return Response(
                 {
-                    'detail':
-                        'Verification code has expired.'
+                    "detail": "Verification code has expired."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -196,8 +187,7 @@ class VerifyQuoteOTPView(APIView):
 
             return Response(
                 {
-                    'detail':
-                        'Too many incorrect attempts.'
+                    "detail": "Too many incorrect attempts."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -208,13 +198,12 @@ class VerifyQuoteOTPView(APIView):
             verification.attempts += 1
 
             verification.save(
-                update_fields=['attempts']
+                update_fields=["attempts"]
             )
 
             return Response(
                 {
-                    'detail':
-                        'Invalid verification code.'
+                    "detail": "Invalid verification code."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -223,13 +212,12 @@ class VerifyQuoteOTPView(APIView):
         verification.is_verified = True
 
         verification.save(
-            update_fields=['is_verified']
+            update_fields=["is_verified"]
         )
 
         return Response(
             {
-                'message':
-                    'Email verified successfully.'
+                "message": "Email verified successfully."
             },
             status=status.HTTP_200_OK
         )
