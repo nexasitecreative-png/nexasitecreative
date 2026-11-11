@@ -1,0 +1,545 @@
+
+/* =====================================================
+   NEXA — INTERACTIVE PORTFOLIO SHOWCASE
+===================================================== */
+
+#projects-container {
+    row-gap: 32px;
+}
+
+/* FILTER SECTION */
+
+.nx-project-filter-wrapper {
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.nx-project-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.nx-filter-btn {
+    border: 1px solid #e9e5f7;
+    border-radius: 50px;
+    padding: 11px 22px;
+    background: white;
+    color: #77758a;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .35s ease;
+}
+
+.nx-filter-btn:hover,
+.nx-filter-btn.active {
+    background: linear-gradient(120deg, #7055f7, #9878ff);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 8px 25px rgba(112,85,247,.2);
+    transform: translateY(-3px);
+}
+
+.nx-project-count {
+    margin-top: 19px;
+    font-size: 12px;
+    color: #9290a3;
+    letter-spacing: 1px;
+}
+
+.nx-project-count span {
+    color: #7055f7;
+    font-weight: 800;
+}
+
+/* PROJECT GRID */
+
+.nx-project-column {
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.nx-project-column.nx-project-hidden {
+    display: none;
+}
+
+/* PROJECT CARD */
+
+.nx-project-card {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 24px;
+    background: white;
+    border: 1px solid rgba(112,85,247,.11);
+    box-shadow: 0 12px 40px rgba(50,40,100,.055);
+    transition: .5s cubic-bezier(.2,.8,.2,1);
+}
+
+.nx-project-card:hover {
+    transform: translateY(-12px);
+    border-color: rgba(112,85,247,.28);
+    box-shadow: 0 28px 65px rgba(75,55,150,.15);
+}
+
+/* IMAGE AREA */
+
+.nx-project-visual {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg,#eeeaff,#e6f4ff);
+}
+
+.nx-project-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform .9s cubic-bezier(.2,.8,.2,1);
+}
+
+.nx-project-card:hover .nx-project-image {
+    transform: scale(1.1);
+}
+
+.nx-project-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #7055f7;
+    font-size: 65px;
+    background:
+        radial-gradient(circle at 20% 20%, #fff, transparent 45%),
+        linear-gradient(135deg,#eeeaff,#e6f4ff);
+}
+
+/* IMAGE OVERLAY */
+
+.nx-project-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        rgba(73,51,160,.10),
+        rgba(36,129,194,.35)
+    );
+    opacity: 0;
+    transition: .45s ease;
+}
+
+.nx-project-card:hover .nx-project-overlay {
+    opacity: 1;
+}
+
+.nx-project-preview-label {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    transform: translateY(-12px);
+    transition: .4s ease;
+}
+
+.nx-project-card:hover .nx-project-preview-label {
+    transform: translateY(0);
+}
+
+.nx-project-preview {
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: 50%;
+    background: rgba(255,255,255,.92);
+    color: #7055f7;
+    font-size: 25px;
+    transform: scale(.65);
+    transition: .4s cubic-bezier(.2,.8,.2,1);
+    cursor: pointer;
+}
+
+.nx-project-card:hover .nx-project-preview {
+    transform: scale(1);
+}
+
+.nx-project-preview:hover {
+    background: #7055f7;
+    color: white;
+}
+
+.nx-project-number {
+    position: absolute;
+    right: 18px;
+    bottom: 17px;
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0,0,0,.4);
+}
+
+/* PROJECT DETAILS */
+
+.nx-project-content {
+    padding: 26px;
+}
+
+.nx-project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.nx-project-category {
+    display: inline-block;
+    padding: 7px 13px;
+    border-radius: 30px;
+    background: #f1edff;
+    color: #7055f7;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .6px;
+}
+
+.nx-project-arrow {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #eeeaf8;
+    border-radius: 50%;
+    color: #7055f7;
+    transition: .35s ease;
+}
+
+.nx-project-card:hover .nx-project-arrow {
+    background: #7055f7;
+    color: white;
+    transform: rotate(45deg);
+}
+
+.nx-project-content h3 {
+    margin-bottom: 12px;
+    color: #19172d;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.nx-project-content p {
+    min-height: 52px;
+    margin-bottom: 23px;
+    color: #858297;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.nx-project-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-top: 1px solid #f0edf7;
+    padding-top: 19px;
+}
+
+.nx-project-text-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #7055f7;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.nx-project-text-button i {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform .3s ease;
+}
+
+.nx-project-text-button:hover i {
+    transform: translateX(6px);
+}
+
+.nx-project-detail {
+    color: #88859a;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nx-project-detail:hover {
+    color: #7055f7;
+}
+
+/* EMPTY STATE */
+
+.nx-project-empty {
+    padding: 65px 20px;
+    border: 1px dashed #dcd4f6;
+    border-radius: 22px;
+    text-align: center;
+    background: #faf9ff;
+}
+
+.nx-project-empty i {
+    display: block;
+    margin-bottom: 17px;
+    color: #7957f6;
+    font-size: 45px;
+}
+
+.nx-project-empty h4 {
+    color: #19172d;
+    font-weight: 800;
+}
+
+.nx-project-empty p {
+    color: #858297;
+}
+
+/* =====================================================
+   FULL SCREEN PROJECT MODAL
+===================================================== */
+
+body.nx-modal-open {
+    overflow: hidden;
+}
+
+.nx-project-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease, visibility .4s ease;
+}
+
+.nx-project-modal.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nx-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(25,23,45,.65);
+    backdrop-filter: blur(12px);
+}
+
+.nx-modal-dialog {
+    position: relative;
+    z-index: 2;
+    width: min(1050px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    border-radius: 27px;
+    background: white;
+    box-shadow: 0 40px 120px rgba(0,0,0,.25);
+    transform: translateY(40px) scale(.96);
+    transition: transform .5s cubic-bezier(.2,.8,.2,1);
+}
+
+.nx-project-modal.active .nx-modal-dialog {
+    transform: translateY(0) scale(1);
+}
+
+.nx-modal-close {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(112,85,247,.15);
+    border-radius: 50%;
+    background: white;
+    color: #7055f7;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.nx-modal-close:hover {
+    background: #7055f7;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.nx-modal-image-wrapper {
+    position: relative;
+    min-height: 450px;
+    background: linear-gradient(135deg,#eeeaff,#e6f4ff);
+}
+
+.nx-modal-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    display: block;
+    object-fit: cover;
+}
+
+.nx-modal-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #7055f7;
+    font-size: 80px;
+}
+
+.nx-modal-placeholder[hidden] {
+    display: none;
+}
+
+.nx-modal-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 55px 38px;
+}
+
+#nx-modal-category {
+    margin-bottom: 17px;
+    color: #7055f7;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#nx-modal-title {
+    margin-bottom: 18px;
+    color: #19172d;
+    font-size: clamp(26px,3vw,40px);
+    font-weight: 850;
+    line-height: 1.2;
+}
+
+#nx-modal-description {
+    margin-bottom: 30px;
+    color: #858297;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.nx-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.nx-modal-actions [hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width: 767px) {
+
+    .nx-project-filters {
+        gap: 8px;
+    }
+
+    .nx-filter-btn {
+        padding: 9px 15px;
+        font-size: 11px;
+    }
+
+    .nx-project-visual {
+        height: 220px;
+    }
+
+    .nx-project-content {
+        padding: 22px;
+    }
+
+    .nx-project-modal {
+        padding: 12px;
+    }
+
+    .nx-modal-dialog {
+        display: block;
+        max-height: 94vh;
+        border-radius: 20px;
+    }
+
+    .nx-modal-image-wrapper,
+    .nx-modal-image-wrapper img {
+        min-height: 240px;
+        height: 240px;
+    }
+
+    .nx-modal-details {
+        padding: 28px 23px;
+    }
+
+    #nx-modal-title {
+        font-size: 27px;
+    }
+
+}
+
+@media(hover: none) {
+
+    .nx-project-overlay {
+        opacity: 1;
+        background: linear-gradient(
+            0deg,
+            rgba(40,25,100,.48),
+            transparent 60%
+        );
+    }
+
+    .nx-project-preview {
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 19px;
+        transform: none;
+    }
+
+    .nx-project-preview-label {
+        display: none;
+    }
+
+}
+
+@media(prefers-reduced-motion: reduce) {
+
+    .nx-project-card,
+    .nx-project-image,
+    .nx-project-modal,
+    .nx-modal-dialog,
+    .nx-filter-btn {
+        transition: none !important;
+        animation: none !important;
+    }
+
+}

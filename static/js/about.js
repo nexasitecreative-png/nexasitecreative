@@ -433,39 +433,36 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
 
+                        
             // =============================================
-            // CTA
+            // CTA - WHATSAPP
             // =============================================
 
             if (ctaTitle) {
-
                 ctaTitle.textContent =
                     data.cta_title ||
                     'Have an idea? Let’s build it together.';
-
             }
-
 
             if (ctaDescription) {
-
                 ctaDescription.textContent =
                     data.cta_description || '';
-
             }
-
 
             if (ctaButton) {
-
-                ctaButton.textContent =
-                    data.cta_button_text ||
-                    'Start a Project';
-
+                ctaButton.innerHTML =
+                    'Start A Project <i class="bi bi-whatsapp"></i>';
 
                 ctaButton.href =
-                    data.cta_button_link ||
-                    '#quote';
+                    'https://wa.me/919908318360?text=' +
+                    encodeURIComponent(
+                        'Hello Nexa Site Creative, I am interested in starting a project with You.'
+                    );
 
+                ctaButton.target = '_blank';
+                ctaButton.rel = 'noopener noreferrer';
             }
+
 
 
             // =============================================

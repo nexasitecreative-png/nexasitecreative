@@ -59,120 +59,101 @@
 <!-- Hero Section -->
 <!-- ========================= -->
 
-<section
-    id="hero"
-    class="py-5"
->
 
-    <div class="container">
+<section id="hero" class="premium-hero">
+
+    <!-- Background Video -->
+    <video class="hero-background-video"
+           autoplay
+           muted
+           loop
+           playsinline
+          
+
+        <source src="{% static 'videos/website-development.mp4' %}"
+                type="video/mp4">
+
+    </video>
+
+    <!-- Dark Overlay -->
+    <div class="hero-video-overlay"></div>
+
+    <!-- Animated Background Elements -->
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+
+    <div class="container hero-content-wrapper">
 
         <!-- Loading -->
+        <div id="hero-loading" class="text-center py-5">
 
-        <div
-            id="hero-loading"
-            class="text-center py-5"
-        >
-
-            <div
-                class="spinner-border"
-                role="status"
-            >
-
-                <span class="visually-hidden">
-                    Loading...
-                </span>
-
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
 
-            <p class="mt-3">
-                Loading...
-            </p>
+            <p class="mt-3 text-white">Loading...</p>
 
         </div>
 
-       
-        <!-- Hero Content -->
-
-        <div
-            id="hero-content"
-            class="d-none"
-        >
+        <!-- Dynamic Hero Content -->
+        <div id="hero-content" class="d-none">
 
             <div class="row align-items-center g-5">
 
-
                 <!-- Hero Text -->
-
                 <div class="col-lg-6">
 
+                    <span id="hero-badge" class="hero-badge"></span>
 
-                    <span
-                        id="hero-badge"
-                        class="text-primary fw-bold"
-                    >
-                    </span>
+                    <h1 id="hero-title" class="hero-title mt-3"></h1>
 
+                    <p id="hero-description" class="hero-description mt-4"></p>
 
-                    <h1
-                        id="hero-title"
-                        class="display-4 fw-bold mt-1"
-                    >
-                    </h1>
-
-
-                    <p
-                        id="hero-description"
-                        class="lead text-muted mt-3"
-                    >
-                    </p>
-
-
-                    <a
-                        id="hero-button"
-                        href="#quote"
-                        class="btn btn-primary btn-lg mt-3"
-                    >
+                    <a id="hero-button"
+                       href="#quote"
+                       class="hero-main-button mt-4">
                     </a>
 
-                </div>
-
-
-                <!-- Hero Image -->
-
-                <div class="col-lg-6">
-
-                    <div
-                        id="hero-image-container"
-                    >
-
-                        <img
-                            id="hero-image"
-                            src=""
-                            alt=""
-                            class="img-fluid"
-                        >
-
+                    <div class="hero-trust-text mt-4">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Creative Design · Smart Development · Real Results
                     </div>
 
                 </div>
 
+                <!-- Hero Image -->
+                <!-- <div class="col-lg-6">
+
+                    <div id="hero-image-container" class="hero-image-frame">
+
+                        <img id="hero-image"
+                             src=""
+                             alt="Nexa Site Creative Digital Solutions"
+                             class="img-fluid">
+
+                    </div>
+
+                </div> -->
+
             </div>
 
         </div>
 
-
         <!-- Error -->
-
-        <div
-            id="hero-error"
-            class="alert alert-danger text-center d-none"
-        >
+        <div id="hero-error"
+             class="alert alert-danger text-center d-none">
             Unable to load hero content.
         </div>
 
     </div>
 
+    <div class="hero-scroll-indicator">
+        <span>SCROLL TO EXPLORE</span>
+        <i class="bi bi-arrow-down"></i>
+    </div>
+
 </section>
+
 
 
     <!-- Services Section -->

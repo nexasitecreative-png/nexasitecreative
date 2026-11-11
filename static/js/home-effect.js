@@ -1,268 +1,471 @@
+
 document.addEventListener("DOMContentLoaded", function () {
 
+    "use strict";
+
+    const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const finePointer = window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+    ).matches;
+
+    document.body.classList.add("motion-ready");
+
     /* ==========================================
-       SCROLL REVEAL
+       1. HERO FLOATING ORBS
     ========================================== */
+
+    const hero = document.getElementById("hero");
+
+    if (hero && !reducedMotion) {
+
+        const orbClasses = [
+            "nx-orb-one",
+            "nx-orb-two",
+            "nx-orb-three"
+        ];
+
+        orbClasses.forEach(function (className) {
+
+            const orb = document.createElement("span");
+
+            orb.className = "nx-orb " + className;
+
+            orb.setAttribute("aria-hidden", "true");
+
+            hero.appendChild(orb);
+
+        });
+
+    }
+
+
+    /* ==========================================
+       2. SCROLL PROGRESS
+    ========================================== */
+
+    const progress = document.createElement("div");
+
+    progress.className = "scroll-progress";
+
+    progress.setAttribute("aria-hidden", "true");
+
+    document.body.appendChild(progress);
+
+    let scrollScheduled = false;
+
+    function updateScrollProgress() {
+
+        const scrollTop = window.scrollY;
+
+        const totalHeight =
+            document.documentElement.scrollHeight -
+            window.innerHeight;
+
+        const percentage = totalHeight > 0
+            ? (scrollTop / totalHeight) * 100
+            : 0;
+
+        progress.style.width = percentage + "%";
+
+        scrollScheduled = false;
+
+    }
+
+    window.addEventListener("scroll", function () {
+
+        if (!scrollScheduled) {
+
+            window.requestAnimationFrame(
+                updateScrollProgress
+            );
+
+            scrollScheduled = true;
+
+        }
+
+    }, { passive: true });
+
+
+    /* ==========================================
+       3. SCROLL REVEAL SYSTEM
+    ========================================== */
+
+    const revealSelectors = [
+        "#services-container > *",
+        "#projects-container > *",
+        "#quote .card",
+        "#faq-container .accordion-item"
+    ].join(",");
+
+    let revealObserver = null;
+
+    if ("IntersectionObserver" in window && !reducedMotion) {
+
+        revealObserver = new IntersectionObserver(
+            function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("show");
+
+                        // Animate only once.
+                        revealObserver.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12,
+                rootMargin: "0px 0px -45px 0px"
+            }
+        );
+
+    }
 
     function setupScrollAnimations() {
 
         const elements = document.querySelectorAll(
-            "#services-container > *, " +
-            "#projects-container > *, " +
-            "#quote .card, " +
-            "#faq-container .accordion-item"
+            revealSelectors
         );
 
         elements.forEach(function (element, index) {
 
-            /*
-             * Don't add the class twice
-             */
-            if (!element.classList.contains("scroll-reveal")) {
-
-                element.classList.add("scroll-reveal");
-
-                /*
-                 * Stagger animation
-                 */
-                element.style.transitionDelay =
-                    (index * 100) + "ms";
-            }
-
-        });
-
-        /*
-         * Create observer
-         */
-        elements.forEach(function (element) {
-
-            if (element.dataset.observed === "true") {
+            if (element.dataset.nxRevealed === "true") {
                 return;
             }
 
-            element.dataset.observed = "true";
+            element.dataset.nxRevealed = "true";
 
-            const observer =
-                new IntersectionObserver(
+            element.classList.add("scroll-reveal");
 
-                    function (entries) {
+            element.style.transitionDelay =
+                Math.min(index % 4, 3) * 100 + "ms";
 
-                        entries.forEach(function (entry) {
+            if (reducedMotion || !revealObserver) {
 
-                            if (entry.isIntersecting) {
+                element.classList.add("show");
 
-                                /*
-                                 * Element comes
-                                 * bottom -> top
-                                 */
-                                entry.target.classList.add("show");
+            } else {
 
-                            } else {
+                revealObserver.observe(element);
 
-                                /*
-                                 * Remove class when
-                                 * leaving viewport.
-                                 *
-                                 * This makes animation
-                                 * happen again when
-                                 * scrolling back.
-                                 */
-                                entry.target.classList.remove("show");
-
-                            }
-
-                        });
-
-                    },
-
-                    {
-                        threshold: 0.15,
-
-                        rootMargin:
-                            "0px 0px -50px 0px"
-                    }
-
-                );
-
-            observer.observe(element);
+            }
 
         });
 
     }
 
-
-    /*
-     * Run initially
-     */
     setupScrollAnimations();
 
 
     /* ==========================================
-       WATCH DYNAMIC CONTENT
+       4. WATCH DYNAMIC CONTENT
     ========================================== */
 
-    const servicesContainer =
-        document.getElementById("services-container");
+    const dynamicContainers = [
+        document.getElementById("services-container"),
+        document.getElementById("projects-container"),
+        document.getElementById("faq-container")
+    ].filter(Boolean);
 
-    const projectsContainer =
-        document.getElementById("projects-container");
+    let mutationScheduled = false;
 
-    const faqContainer =
-        document.getElementById("faq-container");
+    const mutationObserver = new MutationObserver(
+        function () {
 
+            if (mutationScheduled) {
+                return;
+            }
 
-    /*
-     * MutationObserver watches for
-     * elements inserted by fetch()
-     */
-    const mutationObserver =
-        new MutationObserver(function () {
+            mutationScheduled = true;
 
-            setupScrollAnimations();
+            requestAnimationFrame(function () {
 
+                setupScrollAnimations();
+
+                mutationScheduled = false;
+
+            });
+
+        }
+    );
+
+    dynamicContainers.forEach(function (container) {
+
+        mutationObserver.observe(container, {
+            childList: true,
+            subtree: true
         });
 
-
-    if (servicesContainer) {
-
-        mutationObserver.observe(
-            servicesContainer,
-            {
-                childList: true
-            }
-        );
-
-    }
-
-
-    if (projectsContainer) {
-
-        mutationObserver.observe(
-            projectsContainer,
-            {
-                childList: true
-            }
-        );
-
-    }
-
-
-    if (faqContainer) {
-
-        mutationObserver.observe(
-            faqContainer,
-            {
-                childList: true
-            }
-        );
-
-    }
+    });
 
 
     /* ==========================================
-       HERO PARALLAX
+       5. HERO 3D MOUSE MOVEMENT
     ========================================== */
 
-    const hero =
-        document.getElementById("hero");
-
-    const heroImage =
-        document.getElementById("hero-image");
-
+    const heroImageContainer = document.getElementById(
+        "hero-image-container"
+    );
 
     if (
         hero &&
-        heroImage &&
-        window.matchMedia("(pointer: fine)").matches
+        heroImageContainer &&
+        finePointer &&
+        !reducedMotion
     ) {
 
-        hero.addEventListener(
-            "mousemove",
-            function (e) {
+        hero.addEventListener("mousemove", function (event) {
 
-                const rect =
-                    hero.getBoundingClientRect();
+            const rect = hero.getBoundingClientRect();
 
-                const x =
-                    (e.clientX - rect.left)
-                    / rect.width;
+            const x = (
+                (event.clientX - rect.left) / rect.width
+            ) - 0.5;
 
-                const y =
-                    (e.clientY - rect.top)
-                    / rect.height;
+            const y = (
+                (event.clientY - rect.top) / rect.height
+            ) - 0.5;
 
+            const rotateX = -y * 12;
 
-                const rotateX =
-                    (0.5 - y) * 8;
+            const rotateY = x * 12;
 
-                const rotateY =
-                    (x - 0.5) * 8;
+            heroImageContainer.style.transform = `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                translateY(-5px)
+            `;
 
+        });
 
-                heroImage.style.transform =
-                    `
-                    perspective(1000px)
-                    rotateX(${rotateX}deg)
-                    rotateY(${rotateY}deg)
-                    scale(1.03)
-                    `;
-            }
-        );
+        hero.addEventListener("mouseleave", function () {
 
+            heroImageContainer.style.transform =
+                "perspective(1000px) rotateX(0deg) rotateY(0deg)";
 
-        hero.addEventListener(
-            "mouseleave",
-            function () {
-
-                heroImage.style.transform =
-                    `
-                    perspective(1000px)
-                    rotateX(0deg)
-                    rotateY(0deg)
-                    scale(1)
-                    `;
-            }
-        );
+        });
 
     }
 
 
     /* ==========================================
-       SCROLL PROGRESS
+       6. 3D SERVICE AND PROJECT CARDS
     ========================================== */
 
-    const progress =
-        document.createElement("div");
+    if (finePointer && !reducedMotion) {
 
-    progress.className =
-        "scroll-progress";
+        function addTiltEffect(element) {
 
-    document.body.appendChild(progress);
+            if (element.dataset.nxTilt === "true") {
+                return;
+            }
 
+            element.dataset.nxTilt = "true";
 
-    window.addEventListener(
-        "scroll",
-        function () {
+            element.addEventListener("pointermove", function (event) {
 
-            const scrollTop =
-                window.scrollY;
+                const rect = element.getBoundingClientRect();
 
-            const height =
-                document.documentElement.scrollHeight -
-                window.innerHeight;
+                const x = (
+                    (event.clientX - rect.left) / rect.width
+                ) - 0.5;
 
-            const percentage =
-                height > 0
-                    ? (scrollTop / height) * 100
-                    : 0;
+                const y = (
+                    (event.clientY - rect.top) / rect.height
+                ) - 0.5;
 
-            progress.style.width =
-                percentage + "%";
+                element.style.setProperty(
+                    "--nx-tilt-x",
+                    (-y * 5) + "deg"
+                );
 
-        },
-        {
-            passive: true
+                element.style.setProperty(
+                    "--nx-tilt-y",
+                    (x * 5) + "deg"
+                );
+
+            });
+
+            element.addEventListener("pointerleave", function () {
+
+                element.style.setProperty(
+                    "--nx-tilt-x",
+                    "0deg"
+                );
+
+                element.style.setProperty(
+                    "--nx-tilt-y",
+                    "0deg"
+                );
+
+            });
+
         }
+
+        function setupTiltCards() {
+
+            const cards = document.querySelectorAll(
+                ".service-card, #projects-container .card"
+            );
+
+            cards.forEach(addTiltEffect);
+
+        }
+
+        setupTiltCards();
+
+        const cardObserver = new MutationObserver(
+            setupTiltCards
+        );
+
+        dynamicContainers.forEach(function (container) {
+
+            cardObserver.observe(container, {
+                childList: true,
+                subtree: true
+            });
+
+        });
+
+    }
+
+
+    /* ==========================================
+       7. CUSTOM CURSOR LIGHT
+    ========================================== */
+
+    if (finePointer && !reducedMotion) {
+
+        const cursorGlow = document.createElement("div");
+
+        cursorGlow.className = "nx-cursor-glow";
+
+        cursorGlow.setAttribute("aria-hidden", "true");
+
+        document.body.appendChild(cursorGlow);
+
+        let cursorFrame = null;
+
+        document.addEventListener("pointermove", function (event) {
+
+            if (cursorFrame) {
+                cancelAnimationFrame(cursorFrame);
+            }
+
+            cursorFrame = requestAnimationFrame(function () {
+
+                cursorGlow.style.left = event.clientX + "px";
+
+                cursorGlow.style.top = event.clientY + "px";
+
+                cursorGlow.classList.add("active");
+
+                cursorFrame = null;
+
+            });
+
+        }, { passive: true });
+
+        document.addEventListener("pointerleave", function () {
+
+            cursorGlow.classList.remove("active");
+
+        });
+
+    }
+
+
+    /* ==========================================
+       8. MAGNETIC HERO BUTTON
+    ========================================== */
+
+    const heroButton = document.getElementById("hero-button");
+
+    if (
+        heroButton &&
+        finePointer &&
+        !reducedMotion
+    ) {
+
+        heroButton.addEventListener("pointermove", function (event) {
+
+            const rect = heroButton.getBoundingClientRect();
+
+            const x = event.clientX - rect.left - rect.width / 2;
+
+            const y = event.clientY - rect.top - rect.height / 2;
+
+            heroButton.style.transform = `
+                translate(${x * 0.10}px, ${y * 0.15}px)
+            `;
+
+        });
+
+        heroButton.addEventListener("pointerleave", function () {
+
+            heroButton.style.transform = "";
+
+        });
+
+    }
+
+
+    /* ==========================================
+       9. SMOOTH INTERNAL NAVIGATION
+    ========================================== */
+
+    document.querySelectorAll('a[href^="#"]').forEach(
+        function (link) {
+
+            link.addEventListener("click", function (event) {
+
+                const targetId = link.getAttribute("href");
+
+                if (!targetId || targetId === "#") {
+                    return;
+                }
+
+                const target = document.querySelector(targetId);
+
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                target.scrollIntoView({
+                    behavior: reducedMotion ? "auto" : "smooth",
+                    block: "start"
+                });
+
+            });
+
+        }
+    );
+
+
+    /* ==========================================
+       10. INITIALIZE AOS IF AVAILABLE
+    ========================================== */
+
+    if (typeof AOS !== "undefined") {
+
+        AOS.refreshHard();
+
+    }
+
+
+    console.log(
+        "Nexa Site Creative: Advanced motion system initialized."
     );
 
 });
